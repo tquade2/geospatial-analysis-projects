@@ -5,7 +5,7 @@ from datetime import datetime
 import csv
 
 # Initialize Google Maps client
-gmaps = googlemaps.Client(key="AIzaSyB9sei2iAnNTeFmv7NXMXGDQE-8BNIa8Cw")
+gmaps = googlemaps.Client(key="ENTER YOUR KEY HERE")
 
 # File path for the table file
 address_table_file = r"C:\Users\tayqu\OneDrive - The Ohio State University\04 Naloxone\02 Data\Naloxone Table - Exported from ArcGIS Pro - CSV - gmaps.csv"
