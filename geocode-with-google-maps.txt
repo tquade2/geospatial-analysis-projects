@@ -1,0 +1,46 @@
+# Geocoding with Google Maps
+
+import googlemaps
+from datetime import datetime
+import csv
+
+# Initialize Google Maps client
+gmaps = googlemaps.Client(key="AIzaSyB9sei2iAnNTeFmv7NXMXGDQE-8BNIa8Cw")
+
+# File path for the table file
+address_table_file = r"C:\Users\tayqu\OneDrive - The Ohio State University\04 Naloxone\02 Data\Naloxone Table - Exported from ArcGIS Pro - CSV - gmaps.csv"
+
+# Extract addresses from table file
+addresses = []
+with open(address_table_file, "r") as file:
+    reader = csv.reader(file)
+    next(reader, None)  # Skip the header row
+    for row in reader:
+        addresses.append(row[7])  # Replace 0 with the appropriate index
+
+# Geocoding an address and create a new table with results
+geocoded_results = []
+for i, address in enumerate(addresses):
+    print(f"Geocoding address {i+1} of {len(addresses)}: {address}")
+    geocode_result = gmaps.geocode(address)
+    geocoded_results.append(geocode_result)
+
+print("Geocoding completed.")
+
+# Geocoding completed. Saving results to CSV file.
+output_file = r"C:\Users\tayqu\OneDrive - The Ohio State University\04 Naloxone\02 Data\Geocoded Addresses.csv"
+
+with open(output_file, "w", newline="") as file:
+    writer = csv.writer(file)
+    writer.writerow(["Address", "Latitude", "Longitude"])  # Header row
+
+    for result in geocoded_results:
+        if result:
+            address = result[0]["formatted_address"]
+            latitude = result[0]["geometry"]["location"]["lat"]
+            longitude = result[0]["geometry"]["location"]["lng"]
+            writer.writerow([address, latitude, longitude])
+        else:
+            writer.writerow([address, None, None])
+
+print("Geocoded addresses saved to CSV file.")
